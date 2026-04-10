@@ -48,12 +48,13 @@ const user = computed(() => page.props.auth?.user);
                     >
                         Login
                     </Link>
-                    <Link 
+                    <!-- REGISTRATION DISABLED -->
+                    <!-- <Link 
                         href="/register" 
                         class="px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700 transition"
                     >
                         Register
-                    </Link>
+                    </Link> -->
                 </template>
                 <Link 
                     v-else

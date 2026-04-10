@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Car;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 
 class CarController extends Controller
@@ -13,6 +14,14 @@ class CarController extends Controller
     {
         return Inertia::render('Cars/Index', [
             'cars' => Car::latest()->get(),
+        ]);
+    }
+
+    // READ (Show single car)
+    public function show(Car $car)
+    {
+        return Inertia::render('Cars/Show', [
+            'car' => $car,
         ]);
     }
 
@@ -28,9 +37,15 @@ class CarController extends Controller
         $validated = $request->validate([
             'make' => 'required|string|max:255',
             'model' => 'required|string|max:255',
-            'year' => 'required|integer|min:1900|max:'.(date('Y') + 1),
+            'year' => 'required|integer|min:1900|max:' . (date('Y') + 1),
             'price' => 'required|numeric|min:0',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'mileage' => 'nullable|integer|min:0',
+            'color' => 'nullable|string|max:255',
+            'horsepower' => 'nullable|integer|min:0',
+            'transmission' => 'nullable|in:Automatic,Manual,CVT',
+            'fuel_type' => 'nullable|in:Gasoline,Diesel,Electric,Hybrid',
+            'condition' => 'nullable|in:New,Excellent,Good,Fair,Poor',
         ]);
 
         // Handle image upload
@@ -59,21 +74,35 @@ class CarController extends Controller
         $validated = $request->validate([
             'make' => 'required|string|max:255',
             'model' => 'required|string|max:255',
-            'year' => 'required|integer|min:1900|max:'.(date('Y') + 1),
+            'year' => 'required|integer|min:1900|max:' . (date('Y') + 1),
             'price' => 'required|numeric|min:0',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'remove_image' => 'nullable|boolean',
+            'mileage' => 'nullable|integer|min:0',
+            'color' => 'nullable|string|max:255',
+            'horsepower' => 'nullable|integer|min:0',
+            'transmission' => 'nullable|in:Automatic,Manual,CVT',
+            'fuel_type' => 'nullable|in:Gasoline,Diesel,Electric,Hybrid',
+            'condition' => 'nullable|in:New,Excellent,Good,Fair,Poor',
         ]);
 
-        // Handle image upload
+        // Handle image: new upload takes priority, then explicit remove, otherwise keep existing
         if ($request->hasFile('image')) {
-            // Delete old image if exists
-            if ($car->image && \Storage::disk('public')->exists($car->image)) {
-                \Storage::disk('public')->delete($car->image);
+            if ($car->image && Storage::disk('public')->exists($car->image)) {
+                Storage::disk('public')->delete($car->image);
             }
-
-            $path = $request->file('image')->store('cars', 'public');
-            $validated['image'] = $path;
+            $validated['image'] = $request->file('image')->store('cars', 'public');
+        } elseif ($request->boolean('remove_image')) {
+            if ($car->image && Storage::disk('public')->exists($car->image)) {
+                Storage::disk('public')->delete($car->image);
+            }
+            $validated['image'] = null;
+        } else {
+            // No new file and no remove request — keep the existing image untouched
+            unset($validated['image']);
         }
+
+        unset($validated['remove_image']);
 
         $car->update($validated);
 
@@ -84,6 +113,11 @@ class CarController extends Controller
     // DELETE (Remove car)
     public function destroy(Car $car)
     {
+        // Delete image if exists
+        if ($car->image && Storage::disk('public')->exists($car->image)) {
+            Storage::disk('public')->delete($car->image);
+        }
+
         $car->delete();
 
         return redirect()->route('cars.index')

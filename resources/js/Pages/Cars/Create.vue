@@ -8,11 +8,17 @@ const form = useForm({
     year: new Date().getFullYear(),
     price: '',
     image: null,
+    mileage: '',
+    color: '',
+    horsepower: '',
+    transmission: '',
+    fuel_type: '',
+    condition: '',
 });
 
 function submit() {
     form.post('/cars', {
-        forceFormData: true,  // Required for file uploads!
+        forceFormData: true,
     });
 }
 </script>
@@ -23,69 +29,138 @@ function submit() {
             <h1 class="text-3xl font-bold text-gray-900 mb-8">Add New Car</h1>
 
             <form @submit.prevent="submit" class="bg-white rounded-lg shadow p-6 space-y-6">
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Make</label>
-                    <input 
-                        v-model="form.make" 
-                        type="text" 
-                        class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                        :class="{ 'border-red-500': form.errors.make }"
-                    >
-                    <p v-if="form.errors.make" class="mt-1 text-sm text-red-600">{{ form.errors.make }}</p>
+                <!-- Basic Info -->
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Make *</label>
+                        <input v-model="form.make" type="text"
+                            class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
+                            :class="{ 'border-red-500': form.errors.make }">
+                        <p v-if="form.errors.make" class="mt-1 text-sm text-red-600">{{ form.errors.make }}</p>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Model *</label>
+                        <input v-model="form.model" type="text"
+                            class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
+                            :class="{ 'border-red-500': form.errors.model }">
+                        <p v-if="form.errors.model" class="mt-1 text-sm text-red-600">{{ form.errors.model }}</p>
+                    </div>
                 </div>
 
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Model</label>
-                    <input 
-                        v-model="form.model" 
-                        type="text" 
-                        class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                        :class="{ 'border-red-500': form.errors.model }"
-                    >
-                    <p v-if="form.errors.model" class="mt-1 text-sm text-red-600">{{ form.errors.model }}</p>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Year *</label>
+                        <input v-model="form.year" type="number"
+                            class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
+                            :class="{ 'border-red-500': form.errors.year }">
+                        <p v-if="form.errors.year" class="mt-1 text-sm text-red-600">{{ form.errors.year }}</p>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Price *</label>
+                        <input v-model="form.price" type="number" step="0.01"
+                            class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
+                            :class="{ 'border-red-500': form.errors.price }">
+                        <p v-if="form.errors.price" class="mt-1 text-sm text-red-600">{{ form.errors.price }}</p>
+                    </div>
                 </div>
 
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Year</label>
-                    <input 
-                        v-model="form.year" 
-                        type="number" 
-                        class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                        :class="{ 'border-red-500': form.errors.year }"
-                    >
-                    <p v-if="form.errors.year" class="mt-1 text-sm text-red-600">{{ form.errors.year }}</p>
+                <!-- Enhanced Stats -->
+                <div class="border-t pt-6">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Vehicle Details</h3>
+
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Mileage</label>
+                            <input v-model="form.mileage" type="number" placeholder="e.g., 50000"
+                                class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
+                                :class="{ 'border-red-500': form.errors.mileage }">
+                            <p v-if="form.errors.mileage" class="mt-1 text-sm text-red-600">{{ form.errors.mileage }}
+                            </p>
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Color</label>
+                            <input v-model="form.color" type="text" placeholder="e.g., Red"
+                                class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
+                                :class="{ 'border-red-500': form.errors.color }">
+                            <p v-if="form.errors.color" class="mt-1 text-sm text-red-600">{{ form.errors.color }}</p>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-4 mt-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Horsepower</label>
+                            <input v-model="form.horsepower" type="number" placeholder="e.g., 250"
+                                class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
+                                :class="{ 'border-red-500': form.errors.horsepower }">
+                            <p v-if="form.errors.horsepower" class="mt-1 text-sm text-red-600">{{ form.errors.horsepower
+                                }}</p>
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Transmission</label>
+                            <select v-model="form.transmission"
+                                class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
+                                :class="{ 'border-red-500': form.errors.transmission }">
+                                <option value="">Select transmission</option>
+                                <option value="Automatic">Automatic</option>
+                                <option value="Manual">Manual</option>
+                                <option value="CVT">CVT</option>
+                            </select>
+                            <p v-if="form.errors.transmission" class="mt-1 text-sm text-red-600">{{
+                                form.errors.transmission }}</p>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-4 mt-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Fuel Type</label>
+                            <select v-model="form.fuel_type"
+                                class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
+                                :class="{ 'border-red-500': form.errors.fuel_type }">
+                                <option value="">Select fuel type</option>
+                                <option value="Gasoline">Gasoline</option>
+                                <option value="Diesel">Diesel</option>
+                                <option value="Electric">Electric</option>
+                                <option value="Hybrid">Hybrid</option>
+                            </select>
+                            <p v-if="form.errors.fuel_type" class="mt-1 text-sm text-red-600">{{ form.errors.fuel_type
+                                }}</p>
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Condition</label>
+                            <select v-model="form.condition"
+                                class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
+                                :class="{ 'border-red-500': form.errors.condition }">
+                                <option value="">Select condition</option>
+                                <option value="New">New</option>
+                                <option value="Excellent">Excellent</option>
+                                <option value="Good">Good</option>
+                                <option value="Fair">Fair</option>
+                                <option value="Poor">Poor</option>
+                            </select>
+                            <p v-if="form.errors.condition" class="mt-1 text-sm text-red-600">{{ form.errors.condition
+                                }}</p>
+                        </div>
+                    </div>
                 </div>
 
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Price</label>
-                    <input 
-                        v-model="form.price" 
-                        type="number" 
-                        step="0.01"
-                        class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                        :class="{ 'border-red-500': form.errors.price }"
-                    >
-                    <p v-if="form.errors.price" class="mt-1 text-sm text-red-600">{{ form.errors.price }}</p>
-                </div>
-
-                <div>
+                <!-- Image -->
+                <div class="border-t pt-6">
                     <label class="block text-sm font-medium text-gray-700 mb-1">Car Image</label>
-                    <input 
-                        type="file" 
-                        accept="image/*"
-                        @input="form.image = $event.target.files[0]"
-                        class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                        :class="{ 'border-red-500': form.errors.image }"
-                    >
+                    <input type="file" accept="image/*" @input="form.image = $event.target.files[0]"
+                        class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
+                        :class="{ 'border-red-500': form.errors.image }">
                     <p v-if="form.errors.image" class="mt-1 text-sm text-red-600">{{ form.errors.image }}</p>
                 </div>
 
-                <div class="flex items-center space-x-4">
-                    <button 
-                        type="submit" 
+                <div class="flex items-center space-x-4 pt-4">
+                    <button type="submit"
                         class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
-                        :disabled="form.processing"
-                    >
+                        :disabled="form.processing">
                         <span v-if="form.processing">Saving...</span>
                         <span v-else>Create Car</span>
                     </button>

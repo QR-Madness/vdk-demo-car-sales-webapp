@@ -6,5 +6,11 @@ use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 
 abstract class TestCase extends BaseTestCase
 {
-    //
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        // Disable Inertia page existence check during tests
+        config(['inertia.testing.ensure_pages_exist' => false]);
+    }
 }

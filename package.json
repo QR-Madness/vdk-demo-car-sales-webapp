@@ -5,7 +5,7 @@
     "scripts": {
         "build": "vite build",
         "build:vite": "vite build",
-        "test": "php artisan test",
+        "test": "npm run services:up && php artisan test",
         "services:up": "docker compose up -d && echo 'Waiting for MySQL...' && until docker exec laravel_mysql mysqladmin ping -h localhost -u root -proot --silent 2>/dev/null; do sleep 1; done && echo 'MySQL is ready!'",
         "services:up:raw": "docker compose up -d",
         "services:down": "docker compose down",

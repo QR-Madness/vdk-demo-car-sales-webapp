@@ -2,8 +2,8 @@
 import { useForm, Link } from '@inertiajs/vue3';
 
 const form = useForm({
-    email: '',
-    password: '',
+    email: import.meta.env.DEV ? 'test@example.com' : '',
+    password: import.meta.env.DEV ? 'password' : '',
     remember: false,
 });
 
@@ -61,10 +61,11 @@ function submit() {
                 </button>
             </form>
 
-            <p class="text-center text-sm text-gray-600">
+            <!-- REGISTRATION DISABLED -->
+            <!-- <p class="text-center text-sm text-gray-600">
                 Don't have an account? 
                 <Link href="/register" class="text-blue-600 hover:text-blue-800">Register</Link>
-            </p>
+            </p> -->
         </div>
     </div>
 </template>

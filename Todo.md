@@ -15,9 +15,9 @@
 
 # Epic 3 - Thin-CMS + SPA Components
 
-- [ ] Listings CUD
-    - [ ] Auth Component + Wiring
-    - [ ] Gated Admin Component
+- [X] Listings CUD
+    - [X] Auth Component + Wiring
+    - [X] Gated Admin Component(s)
 
 # Epic 4 - UX Implementation
 
