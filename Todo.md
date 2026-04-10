@@ -10,8 +10,8 @@
 
 - [x] Setup Docker Compose for local MySQL server
 - [x] Convert DB Adapter from SQLite to MySQL
-- [ ] Authentication Routes + Tests
-- [ ] Listings CUD Routes + Tests
+- [X] Authentication Routes + Tests
+- [X] Listings CUD Routes + Tests
 
 # Epic 3 - Thin-CMS + SPA Components
 
