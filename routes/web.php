@@ -2,10 +2,11 @@
 
 use App\Http\Controllers\CarController;
 use App\Http\Controllers\UserController;
+use App\Models\Car;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
-Route::get('/', fn () => Inertia::render('Home', ['message' => 'Welcome']));
+Route::get('/', fn () => Inertia::render('Home', ['carsCount' => Car::count()]));
 Route::get('/about', fn () => Inertia::render('About'));
 
 // Car CRUD routes - Public viewing, authenticated management

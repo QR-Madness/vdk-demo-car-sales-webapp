@@ -15,18 +15,13 @@
 npm run services:up
 ```
 
-2. **Apply Database Migrations**
+2. **Setup Database**
 
 ```bash
-npm run db:migrate
+npm run db:reset
 ```
 
-3. **Seed Database with Content**
-```bash
-npm run db:seed
-```
-
-4. **Run Application**
+1. **Run Application**
 ```bash
 npm run dev
 ```

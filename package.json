@@ -12,7 +12,7 @@
         "db:migrate": "php artisan migrate",
         "db:seed": "php artisan db:seed",
         "db:reset": "php artisan migrate:fresh --seed",
-        "dev": "php artisan build && php artisan serve --port 12936",
+        "dev": "vite build && php artisan serve --port 12936",
         "dev:hmr": "concurrently \"php artisan serve --port 12936\" \"vite\" --names=laravel,vite --prefix-colors=blue,green"
     },
     "devDependencies": {
