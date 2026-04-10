@@ -30,11 +30,17 @@ class CarController extends Controller
             'model' => 'required|string|max:255',
             'year' => 'required|integer|min:1900|max:'.(date('Y') + 1),
             'price' => 'required|numeric|min:0',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
+
+        // Handle image upload
+        if ($request->hasFile('image')) {
+            $path = $request->file('image')->store('cars', 'public');
+            $validated['image'] = $path;
+        }
 
         Car::create($validated);
 
-        // Redirect back to list - SPA-style!
         return redirect()->route('cars.index')
             ->with('success', 'Car created successfully!');
     }
@@ -55,7 +61,19 @@ class CarController extends Controller
             'model' => 'required|string|max:255',
             'year' => 'required|integer|min:1900|max:'.(date('Y') + 1),
             'price' => 'required|numeric|min:0',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
+
+        // Handle image upload
+        if ($request->hasFile('image')) {
+            // Delete old image if exists
+            if ($car->image && \Storage::disk('public')->exists($car->image)) {
+                \Storage::disk('public')->delete($car->image);
+            }
+
+            $path = $request->file('image')->store('cars', 'public');
+            $validated['image'] = $path;
+        }
 
         $car->update($validated);
 

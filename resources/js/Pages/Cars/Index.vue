@@ -31,6 +31,7 @@ function deleteCar(id) {
                 <table class="min-w-full">
                     <thead class="bg-gray-50">
                         <tr>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Image</th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Make</th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Model</th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Year</th>
@@ -40,6 +41,17 @@ function deleteCar(id) {
                     </thead>
                     <tbody class="divide-y divide-gray-200">
                         <tr v-for="car in cars" :key="car.id">
+                            <td class="px-6 py-4">
+                                <img 
+                                    v-if="car.image" 
+                                    :src="`/storage/${car.image}`" 
+                                    class="h-16 w-24 object-cover rounded"
+                                    alt="Car image"
+                                >
+                                <div v-else class="h-16 w-24 bg-gray-200 rounded flex items-center justify-center text-gray-400 text-xs">
+                                    No image
+                                </div>
+                            </td>
                             <td class="px-6 py-4 text-gray-900">{{ car.make }}</td>
                             <td class="px-6 py-4 text-gray-600">{{ car.model }}</td>
                             <td class="px-6 py-4 text-gray-600">{{ car.year }}</td>
@@ -61,7 +73,7 @@ function deleteCar(id) {
                             </td>
                         </tr>
                         <tr v-if="cars.length === 0">
-                            <td colspan="5" class="px-6 py-8 text-center text-gray-500">
+                            <td colspan="6" class="px-6 py-8 text-center text-gray-500">
                                 No cars yet. Add your first car!
                             </td>
                         </tr>
