@@ -3,11 +3,12 @@
     "private": true,
     "type": "module",
     "scripts": {
+        "build": "vite build",
         "build:vite": "vite build",
         "test": "php artisan test",
-        "dev": "php artisan serve & concurrently \"npm run dev:vite\" \"npm run dev:watch\"",
-        "dev:vite": "vite",
-        "dev:watch": "php artisan watch"
+        "dev": "php artisan serve --port 12936",
+        "dev:hmr": "php artisan serve --port 12936 & concurrently \"vite\" ",
+        "migrate": "php artisan migrate"
     },
     "devDependencies": {
         "@tailwindcss/vite": "^4.2.2",
